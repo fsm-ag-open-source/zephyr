@@ -2075,6 +2075,23 @@ static int uart_stm32_registers_configure(const struct device *dev)
 	}
 #endif /* CONFIG_PM */
 
+	if (config->irda_enable) {
+		/* TODO force bits to be disabled, that are not allowed
+		   In IRDA mode, the following bits must be kept cleared:
+			- LINEN, STOP and CLKEN bits in the USART_CR2 register,
+			- SCEN and HDSEL bits in the USART_CR3 register.
+			CLEAR_BIT(hirda->Instance->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN | USART_CR2_STOP));
+			CLEAR_BIT(hirda->Instance->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL));*/
+
+		LL_USART_SetIrdaPowerMode(usart, LL_USART_IRDA_POWER_NORMAL);
+		/* TODO: calculate the prescale value here!
+		The value has to chosen, so that the IrDA Pulse of 1.4 to 2.2 µs is present for
+		two clock cycles after prescale was conducted.
+		*/
+		LL_USART_SetIrdaPrescaler(usart, 10);
+		LL_USART_ConfigIrdaMode(usart);
+	}
+
 	LL_USART_Enable(usart);
 
 #ifdef USART_ISR_TEACK
@@ -2441,6 +2458,7 @@ static const struct uart_stm32_config uart_stm32_cfg_##index = {	\
 	.de_assert_time = DT_INST_PROP(index, de_assert_time),		\
 	.de_deassert_time = DT_INST_PROP(index, de_deassert_time),	\
 	.de_invert = DT_INST_PROP(index, de_invert),			\
+	.irda_enable = DT_INST_PROP(index, irda_enable),			\
 	.fifo_enable = DT_INST_PROP(index, fifo_enable),		\
 	STM32_UART_IRQ_HANDLER_FUNC(index)				\
 	STM32_UART_PM_WAKEUP(index)					\

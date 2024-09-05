@@ -90,3 +90,8 @@ properties:
       allows more reliable communication with UART devices sensitive to variation of inter-frames
       delays.
       In RX, FIFO reduces overrun occurrences.
+
+  irda-enable:
+    type: boolean
+    description: |
+      Enables irda communication mode.

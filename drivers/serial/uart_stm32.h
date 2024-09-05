@@ -49,6 +49,8 @@ struct uart_stm32_config {
 	uint8_t de_deassert_time;
 	/* enable de pin inversion */
 	bool de_invert;
+	/* enable irda mode */
+	bool irda_enable;
 	/* enable fifo */
 	bool fifo_enable;
 	/* pin muxing */
