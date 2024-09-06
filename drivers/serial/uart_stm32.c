@@ -2076,12 +2076,17 @@ static int uart_stm32_registers_configure(const struct device *dev)
 #endif /* CONFIG_PM */
 
 	if (config->irda_enable) {
-		/* TODO force bits to be disabled, that are not allowed
-		   In IRDA mode, the following bits must be kept cleared:
-			- LINEN, STOP and CLKEN bits in the USART_CR2 register,
-			- SCEN and HDSEL bits in the USART_CR3 register.
-			CLEAR_BIT(hirda->Instance->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN | USART_CR2_STOP));
-			CLEAR_BIT(hirda->Instance->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL));*/
+		__ASSERT(
+			IS_LPUART_INSTANCE(config->usart) == false,
+			"IrDA mode is not incompatible with lpuart dev %s",
+			dev->name
+		);
+
+		__ASSERT(LL_USART_ReadReg(usart, CR2) & (USART_CR2_LINEN | USART_CR2_CLKEN | USART_CR2_STOP) == 0,
+			 "Invalid usart configuration for IrDA mode in register CR2");
+
+		__ASSERT(LL_USART_ReadReg(usart, CR3) & (USART_CR3_SCEN | USART_CR3_HDSEL) == 0,
+			 "Invalid usart configuration for IrDA mode in register CR3");
 
 		LL_USART_SetIrdaPowerMode(usart, LL_USART_IRDA_POWER_NORMAL);
 		/* TODO: calculate the prescale value here!
