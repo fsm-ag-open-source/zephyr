@@ -2082,10 +2082,10 @@ static int uart_stm32_registers_configure(const struct device *dev)
 			dev->name
 		);
 
-		__ASSERT(LL_USART_ReadReg(usart, CR2) & (USART_CR2_LINEN | USART_CR2_CLKEN | USART_CR2_STOP) == 0,
+		__ASSERT((LL_USART_ReadReg(usart, CR2) & (USART_CR2_LINEN | USART_CR2_CLKEN | USART_CR2_STOP)) == 0,
 			 "Invalid usart configuration for IrDA mode in register CR2");
 
-		__ASSERT(LL_USART_ReadReg(usart, CR3) & (USART_CR3_SCEN | USART_CR3_HDSEL) == 0,
+		__ASSERT((LL_USART_ReadReg(usart, CR3) & (USART_CR3_SCEN | USART_CR3_HDSEL)) == 0,
 			 "Invalid usart configuration for IrDA mode in register CR3");
 
 		LL_USART_SetIrdaPowerMode(usart, LL_USART_IRDA_POWER_NORMAL);
