@@ -168,6 +168,10 @@ config TRACING_BACKEND_ADSP_MEMORY_WINDOW
 	help
 	  Use ADSP memory debug memory window to output tracing data
 
+config TRACING_BACKEND_RTT
+	bool "Segger RTT backend"
+	depends on USE_SEGGER_RTT
+	depends on THREAD_MONITOR
 endchoice
 
 config RAM_TRACING_BUFFER_SIZE

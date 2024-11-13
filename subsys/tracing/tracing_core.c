@@ -31,6 +31,8 @@
 #define TRACING_BACKEND_NAME "tracing_backend_ram"
 #elif defined CONFIG_TRACING_BACKEND_ADSP_MEMORY_WINDOW
 #define TRACING_BACKEND_NAME "tracing_backend_adsp_memory_window"
+#elif defined CONFIG_TRACING_BACKEND_RTT
+#define TRACING_BACKEND_NAME "tracing_backend_rtt"
 #else
 #define TRACING_BACKEND_NAME ""
 #endif
